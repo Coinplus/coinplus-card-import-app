@@ -1,0 +1,75 @@
+import 'package:flutter/material.dart';
+
+import 'button_settings.dart';
+
+extension ElevatedButtonExtensions on ThemeData {
+  ButtonStyle buttonStyle({
+    ButtonTypes buttonType = ButtonTypes.PRIMARY,
+    TextStyle? textStyle,
+  }) {
+    Color backgroundColor;
+    const overlayColor = Colors.transparent;
+    Color foregroundColor;
+    Color borderColor;
+    EdgeInsets contentPadding;
+    contentPadding = const EdgeInsets.symmetric(
+      vertical: 15,
+      horizontal: 22,
+    );
+    switch (buttonType) {
+      case ButtonTypes.PRIMARY:
+        backgroundColor = const Color(0xFFFD5340);
+        foregroundColor = Colors.white;
+        borderColor = Colors.transparent;
+        break;
+      case ButtonTypes.RED:
+        backgroundColor = Colors.red;
+        foregroundColor = Colors.white;
+        borderColor = Colors.transparent;
+        break;
+      case ButtonTypes.TRANSPARENT:
+        backgroundColor = Colors.transparent;
+        foregroundColor = Colors.black;
+        borderColor = Colors.transparent;
+        break;
+    }
+
+    return ButtonStyle(
+      foregroundColor: MaterialStateProperty.resolveWith(
+        (states) {
+          return textStyle?.color ??
+              (states.contains(MaterialState.disabled) ? foregroundColor.withOpacity(0.5) : foregroundColor);
+        },
+      ),
+      shadowColor: const MaterialStatePropertyAll(Colors.transparent),
+      padding: MaterialStateProperty.all(contentPadding),
+      shape: MaterialStateProperty.resolveWith(
+        (states) {
+          return RoundedRectangleBorder(
+            borderRadius: const BorderRadius.all(
+              Radius.circular(8),
+            ),
+            side: BorderSide(
+              color: states.contains(MaterialState.disabled) ? Colors.transparent : borderColor,
+            ),
+          );
+        },
+      ),
+      textStyle: MaterialStateProperty.all(
+        textStyle ??
+            const TextStyle(
+              fontWeight: FontWeight.w700,
+              fontSize: 18,
+              height: 1,
+            ),
+      ),
+      enableFeedback: true,
+      overlayColor: MaterialStateProperty.all(overlayColor),
+      backgroundColor: MaterialStateProperty.resolveWith(
+        (states) {
+          return states.contains(MaterialState.disabled) ? backgroundColor.withOpacity(0.5) : backgroundColor;
+        },
+      ),
+    );
+  }
+}
