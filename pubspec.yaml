@@ -12,6 +12,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  provider: ^6.0.5
   firebase_core: ^2.19.0
   cloud_firestore: ^4.13.3
   nfc_manager: ^3.2.0
@@ -21,6 +22,7 @@ dependencies:
   flutter_scale_tap: ^1.0.5
   nxp_originality_verifier: ^0.0.6
   lottie: ^2.4.0
+  auto_route: ^7.3.2
 
 
   cupertino_icons: ^1.0.2
@@ -33,6 +35,7 @@ dev_dependencies:
   json_serializable: ^6.6.1
   mobx_codegen: ^2.2.0
   collection: ^1.17.1
+  auto_route_generator: ^7.1.1
 
 
 

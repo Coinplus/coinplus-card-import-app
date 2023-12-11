@@ -23,7 +23,8 @@ CardsModel _$CardsModelFromJson(Map<String, dynamic> json) => CardsModel(
       verificationFailureCount: json['verificationFailureCount'] as int?,
     );
 
-Map<String, dynamic> _$CardsModelToJson(CardsModel instance) => <String, dynamic>{
+Map<String, dynamic> _$CardsModelToJson(CardsModel instance) =>
+    <String, dynamic>{
       'activation': instance.activation,
       'activationCount': instance.activationCount,
       'activationFailureCount': instance.activationFailureCount,

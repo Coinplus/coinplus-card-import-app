@@ -1,3 +1,4 @@
+import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
@@ -6,7 +7,9 @@ import 'package:nfc_manager/nfc_manager.dart';
 import '../../services/firestore_service/firestore_service.dart';
 import '../../themes/app_fonts.dart';
 import '../../widgets/loading_button.dart';
+import '../../widgets/scan_nfc_button/scan_nfc_button.dart';
 
+@RoutePage()
 class CardInfoPage extends HookWidget {
   const CardInfoPage({
     super.key,
@@ -17,6 +20,7 @@ class CardInfoPage extends HookWidget {
     required this.tagId,
     required this.recordsLength,
     required this.isExistsInDb,
+    required this.barcodeIdFromDb,
   });
 
   final String? cardColor;
@@ -26,17 +30,18 @@ class CardInfoPage extends HookWidget {
   final String? tagId;
   final int? recordsLength;
   final bool? isExistsInDb;
+  final int? barcodeIdFromDb;
 
   @override
   Widget build(BuildContext context) {
-    useEffect(() {
-      _nfcStop();
-      return null;
-    });
     final isOldCard = useState<bool>(recordsLength! < 2 || false);
     final _textFieldController = useTextEditingController();
     late var barcodeId = '';
-
+    useEffect(() {
+      _textFieldController.text = barcodeIdFromDb.toString();
+      _nfcStop();
+      return null;
+    });
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -62,7 +67,7 @@ class CardInfoPage extends HookWidget {
                   width: 60,
                   decoration: BoxDecoration(image: getFrontImageForCardColor(cardColor)),
                 ),
-                const Gap(10),
+                const Gap(5),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -77,7 +82,7 @@ class CardInfoPage extends HookWidget {
                     ),
                   ],
                 ),
-                const Gap(10),
+                const Gap(5),
                 const SizedBox(
                   height: 3,
                   width: 350,
@@ -87,7 +92,7 @@ class CardInfoPage extends HookWidget {
                     color: Colors.grey,
                   ),
                 ),
-                const Gap(10),
+                const Gap(5),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -102,7 +107,7 @@ class CardInfoPage extends HookWidget {
                     ),
                   ],
                 ),
-                const Gap(10),
+                const Gap(5),
                 const SizedBox(
                   height: 3,
                   width: 350,
@@ -112,7 +117,7 @@ class CardInfoPage extends HookWidget {
                     color: Colors.grey,
                   ),
                 ),
-                const Gap(10),
+                const Gap(5),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -127,7 +132,7 @@ class CardInfoPage extends HookWidget {
                     ),
                   ],
                 ),
-                const Gap(10),
+                const Gap(5),
                 const SizedBox(
                   height: 3,
                   width: 350,
@@ -137,7 +142,7 @@ class CardInfoPage extends HookWidget {
                     color: Colors.grey,
                   ),
                 ),
-                const Gap(10),
+                const Gap(5),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -152,7 +157,7 @@ class CardInfoPage extends HookWidget {
                     ),
                   ],
                 ),
-                const Gap(10),
+                const Gap(5),
                 const SizedBox(
                   height: 3,
                   width: 350,
@@ -162,7 +167,7 @@ class CardInfoPage extends HookWidget {
                     color: Colors.grey,
                   ),
                 ),
-                const Gap(10),
+                const Gap(5),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -183,7 +188,7 @@ class CardInfoPage extends HookWidget {
                     ),
                   ],
                 ),
-                const Gap(10),
+                const Gap(5),
                 const SizedBox(
                   height: 3,
                   width: 350,
@@ -193,7 +198,7 @@ class CardInfoPage extends HookWidget {
                     color: Colors.grey,
                   ),
                 ),
-                const Gap(10),
+                const Gap(5),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -212,7 +217,7 @@ class CardInfoPage extends HookWidget {
                     ),
                   ],
                 ),
-                const Gap(10),
+                const Gap(5),
                 const SizedBox(
                   height: 3,
                   width: 350,
@@ -222,7 +227,7 @@ class CardInfoPage extends HookWidget {
                     color: Colors.grey,
                   ),
                 ),
-                const Gap(10),
+                const Gap(5),
                 const Text(
                   'Possible old card',
                   style: TextStyle(fontWeight: FontWeight.bold, fontFamily: FontFamily.RedHatMedium),
@@ -249,7 +254,7 @@ class CardInfoPage extends HookWidget {
                     ),
                   ],
                 ),
-                const Gap(10),
+                const Gap(5),
                 const SizedBox(
                   height: 3,
                   width: 350,
@@ -278,7 +283,8 @@ class CardInfoPage extends HookWidget {
                         onChanged: (value) {
                           barcodeId = value;
                         },
-                      ),),
+                      ),
+                    ),
                   ],
                 ),
                 const Gap(40),
@@ -289,27 +295,42 @@ class CardInfoPage extends HookWidget {
                       height: 50,
                       width: 250,
                       child: LoadingButton(
-                        onPressed: () async {
-                          await setDataWithCustomDocumentId(
-                            context: context,
-                            documentID: walletAddress,
-                            tagId: tagId,
-                            type: formFactor == 'c' ? 'CARD' : 'BAR',
-                            cardColor: cardColor == '0'
-                                ? 'ORANGE'
-                                : cardColor == '1'
-                                    ? 'WHITE'
-                                    : cardColor == '2'
-                                        ? 'BLACK'
-                                        : 'OLD CARD',
-                            possibleOldCard: isOldCard.value,
-                            barcodeId: int.tryParse(barcodeId),
-                          );
-                        },
+                        onPressed: isExistsInDb == false
+                            ? () async {
+                                await setDataWithCustomDocumentId(
+                                  context: context,
+                                  documentID: walletAddress,
+                                  tagId: tagId,
+                                  type: formFactor == 'c' ? 'CARD' : 'BAR',
+                                  cardColor: cardColor == '0'
+                                      ? 'ORANGE'
+                                      : cardColor == '1'
+                                          ? 'WHITE'
+                                          : cardColor == '2'
+                                              ? 'BLACK'
+                                              : 'OLD CARD',
+                                  possibleOldCard: isOldCard.value,
+                                  barcodeId: int.tryParse(barcodeId),
+                                );
+                              }
+                            : null,
                         child: const Text(
                           'Add to database',
                           style: TextStyle(fontFamily: FontFamily.RedHatMedium, fontWeight: FontWeight.normal),
                         ),
+                      ),
+                    ),
+                  ],
+                ),
+                const Gap(10),
+                const Row(
+                  children: [
+                    Gap(55),
+                    SizedBox(
+                      height: 50,
+                      width: 250,
+                      child: ScanNfcButton(
+                        isInInfoPage: true,
                       ),
                     ),
                   ],
@@ -322,6 +343,7 @@ class CardInfoPage extends HookWidget {
     );
   }
 }
+
 Future<void> _nfcStop() async {
   await Future.delayed(const Duration(milliseconds: 3000));
   await NfcManager.instance.stopSession();
@@ -346,5 +368,4 @@ DecorationImage getFrontImageForCardColor(String? colorNum) {
         image: Image.asset('assets/images/orange_card_front.png').image,
       );
   }
-
 }

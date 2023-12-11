@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../../models/nfc_tag_model/nfc_tag_model.dart';
 import '../../widgets/loading_button.dart';
+import '../../widgets/scan_nfc_button/scan_nfc_button.dart';
 
 Future<void> setDataWithCustomDocumentId({
   required String? documentID,
@@ -75,20 +76,15 @@ Future<void> setDataWithCustomDocumentId({
         await showDialog(
           context: context,
           builder: (_) {
-            return AlertDialog(
-              title: const Padding(
+            return const AlertDialog(
+              title: Padding(
                 padding: EdgeInsets.all(8),
                 child: Text('Data set successfully!'),
               ),
               actions: [
                 Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: LoadingButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Text('Close'),
-                  ),
+                  padding: EdgeInsets.all(8),
+                  child: ScanNfcButton(isInInfoPage: true,),
                 ),
               ],
             );
@@ -122,4 +118,20 @@ Future<void> setDataWithCustomDocumentId({
   } catch (e) {
     log('Error checking document existence: $e');
   }
+}
+
+Future<CardsModel?> getCardData(String documentId) async {
+  final _firestore = FirebaseFirestore.instance;
+
+  final DocumentSnapshot documentSnapshot = await _firestore.collection('cards').doc(documentId).get();
+
+  if (documentSnapshot.exists) {
+    final documentData = documentSnapshot.data() as Map<String, dynamic>?;
+
+    if (documentData != null) {
+      final card = CardsModel.fromJson(documentData);
+      return card;
+    }
+  } else {}
+  return null;
 }
