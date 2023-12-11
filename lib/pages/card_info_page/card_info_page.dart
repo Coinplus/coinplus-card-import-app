@@ -301,7 +301,7 @@ class CardInfoPage extends HookWidget {
                                   context: context,
                                   documentID: walletAddress,
                                   tagId: tagId,
-                                  type: formFactor == 'c' ? 'CARD' : 'BAR',
+                                  type: formFactor == 'c' ? 'CARD' : formFactor == 'b' ? 'BAR' : 'OLD CARD',
                                   cardColor: cardColor == '0'
                                       ? 'ORANGE'
                                       : cardColor == '1'
@@ -345,7 +345,7 @@ class CardInfoPage extends HookWidget {
 }
 
 Future<void> _nfcStop() async {
-  await Future.delayed(const Duration(milliseconds: 3000));
+  await Future.delayed(const Duration(milliseconds: 1000));
   await NfcManager.instance.stopSession();
 }
 
@@ -365,7 +365,7 @@ DecorationImage getFrontImageForCardColor(String? colorNum) {
       );
     default:
       return DecorationImage(
-        image: Image.asset('assets/images/orange_card_front.png').image,
+        image: Image.asset('assets/images/old_card.jpg').image,
       );
   }
 }
