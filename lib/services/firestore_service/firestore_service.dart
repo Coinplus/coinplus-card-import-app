@@ -36,18 +36,20 @@ Future<void> setDataWithCustomDocumentId({
   final customDocumentId = documentID;
 
   final card = CardsModel(
-    activation: '',
-    activationCount: '',
-    activationFailureCount: '',
+    activated: false,
+    activationCount: 0,
+    activationFailureCount: 0,
     address: documentID,
     approved: true,
     barcodeId: barcodeId,
     color: cardColor,
-    connected: 1,
+    connected: 0,
+    deleted: 0,
     email: '',
     nfcId: tagId,
     possibleOldCard: possibleOldCard,
-    replenished: [],
+    replenished: false,
+    replenishmentHistory: [],
     type: type,
     verificationFailureCount: 0,
   );
