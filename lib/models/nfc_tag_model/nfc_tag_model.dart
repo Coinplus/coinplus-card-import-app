@@ -37,7 +37,7 @@ class CardsModel {
   final int? activationFailureCount;
   final String? address;
   final bool? approved;
-  final int? barcodeId;
+  final String? barcodeId;
   final String? color;
   final int? connected;
   final int? deleted;
