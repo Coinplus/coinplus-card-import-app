@@ -1,8 +1,10 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
 import 'package:nfc_manager/nfc_manager.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../services/firestore_service/firestore_service.dart';
 import '../../themes/app_fonts.dart';
@@ -30,18 +32,34 @@ class CardInfoPage extends HookWidget {
   final String? tagId;
   final int? recordsLength;
   final bool? isExistsInDb;
-  final int? barcodeIdFromDb;
+  final String? barcodeIdFromDb;
 
   @override
   Widget build(BuildContext context) {
     final isOldCard = useState<bool>(recordsLength! < 2 || false);
     final _textFieldController = useTextEditingController();
-    late var barcodeId = '';
+    final barcodeId = useRef<String>('');
+    Future<void> _loadTextFieldValue() async {
+      final prefs = await SharedPreferences.getInstance();
+      final savedValue = prefs.getString('textFieldValue');
+      if (savedValue != null) {
+        _textFieldController.text = savedValue;
+      }
+    }
+
+    Future<void> saveTextFieldValue(String value) async {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('textFieldValue', value);
+      barcodeId.value = value;
+    }
+
     useEffect(() {
       _textFieldController.text = barcodeIdFromDb.toString();
+      _loadTextFieldValue();
       _nfcStop();
       return null;
     });
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -72,7 +90,7 @@ class CardInfoPage extends HookWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      'Is exists in DB:',
+                      'Exists in DB',
                       style: TextStyle(fontWeight: FontWeight.bold, fontFamily: FontFamily.RedHatMedium),
                     ),
                     const Gap(5),
@@ -203,7 +221,7 @@ class CardInfoPage extends HookWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      'Form factor:',
+                      'Wallet type:',
                       style: TextStyle(fontWeight: FontWeight.bold, fontFamily: FontFamily.RedHatMedium),
                     ),
                     const Gap(5),
@@ -277,11 +295,15 @@ class CardInfoPage extends HookWidget {
                       width: 120,
                       child: TextField(
                         controller: _textFieldController,
+                          inputFormatters: [
+                            UpperCaseTextFormatter(),
+                          ],
                         onTapOutside: (_) {
                           WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
                         },
-                        onChanged: (value) {
-                          barcodeId = value;
+                        onChanged: (value) async {
+                         barcodeId.value = value;
+                         _textFieldController.text = value;
                         },
                       ),
                     ),
@@ -301,7 +323,11 @@ class CardInfoPage extends HookWidget {
                                   context: context,
                                   documentID: walletAddress,
                                   tagId: tagId,
-                                  type: formFactor == 'c' ? 'CARD' : formFactor == 'b' ? 'BAR' : 'OLD CARD',
+                                  type: formFactor == 'c'
+                                      ? 'CARD'
+                                      : formFactor == 'b'
+                                          ? 'BAR'
+                                          : 'OLD CARD',
                                   cardColor: cardColor == '0'
                                       ? 'ORANGE'
                                       : cardColor == '1'
@@ -310,8 +336,9 @@ class CardInfoPage extends HookWidget {
                                               ? 'BLACK'
                                               : 'OLD CARD',
                                   possibleOldCard: isOldCard.value,
-                                  barcodeId: int.tryParse(barcodeId),
+                                  barcodeId: barcodeId.value,
                                 );
+                                await saveTextFieldValue(barcodeId.value);
                               }
                             : null,
                         child: const Text(
@@ -367,5 +394,15 @@ DecorationImage getFrontImageForCardColor(String? colorNum) {
       return DecorationImage(
         image: Image.asset('assets/images/old_card.jpg').image,
       );
+  }
+}
+
+class UpperCaseTextFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+    return TextEditingValue(
+      text: newValue.text.toUpperCase(),
+      selection: newValue.selection,
+    );
   }
 }

@@ -24,7 +24,7 @@ import '../screen_services.dart';
 Future<void> setDataWithCustomDocumentId({
   required String? documentID,
   required String? tagId,
-  required int? barcodeId,
+  required String? barcodeId,
   required String? cardColor,
   required bool? possibleOldCard,
   required BuildContext context,
@@ -150,7 +150,7 @@ Future<void> setDataWithCustomDocumentId({
                       tagId: formattedTagId,
                       recordsLength: recordsLength,
                       isExistsInDb: documentSnapshot.exists,
-                      barcodeIdFromDb: card?.barcodeId,
+                      barcodeIdFromDb: card!.barcodeId,
                     ),
                   );
                 },

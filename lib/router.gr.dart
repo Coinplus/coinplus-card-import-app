@@ -56,7 +56,7 @@ class CardInfoRoute extends _i3.PageRouteInfo<CardInfoRouteArgs> {
     required String? tagId,
     required int? recordsLength,
     required bool? isExistsInDb,
-    required int? barcodeIdFromDb,
+    required String? barcodeIdFromDb,
     List<_i3.PageRouteInfo>? children,
   }) : super(
           CardInfoRoute.name,
@@ -109,7 +109,7 @@ class CardInfoRouteArgs {
 
   final bool? isExistsInDb;
 
-  final int? barcodeIdFromDb;
+  final String? barcodeIdFromDb;
 
   @override
   String toString() {
