@@ -32,6 +32,7 @@ abstract class $Router extends _i3.RootStackRouter {
           recordsLength: args.recordsLength,
           isExistsInDb: args.isExistsInDb,
           barcodeIdFromDb: args.barcodeIdFromDb,
+          serialNumber: args.serialNumber,
         ),
       );
     },
@@ -57,6 +58,7 @@ class CardInfoRoute extends _i3.PageRouteInfo<CardInfoRouteArgs> {
     required int? recordsLength,
     required bool? isExistsInDb,
     required String? barcodeIdFromDb,
+    required String? serialNumber,
     List<_i3.PageRouteInfo>? children,
   }) : super(
           CardInfoRoute.name,
@@ -70,6 +72,7 @@ class CardInfoRoute extends _i3.PageRouteInfo<CardInfoRouteArgs> {
             recordsLength: recordsLength,
             isExistsInDb: isExistsInDb,
             barcodeIdFromDb: barcodeIdFromDb,
+            serialNumber: serialNumber,
           ),
           initialChildren: children,
         );
@@ -91,6 +94,7 @@ class CardInfoRouteArgs {
     required this.recordsLength,
     required this.isExistsInDb,
     required this.barcodeIdFromDb,
+    required this.serialNumber,
   });
 
   final _i4.Key? key;
@@ -111,9 +115,11 @@ class CardInfoRouteArgs {
 
   final String? barcodeIdFromDb;
 
+  final String? serialNumber;
+
   @override
   String toString() {
-    return 'CardInfoRouteArgs{key: $key, cardColor: $cardColor, formFactor: $formFactor, walletAddress: $walletAddress, isOriginalTag: $isOriginalTag, tagId: $tagId, recordsLength: $recordsLength, isExistsInDb: $isExistsInDb, barcodeIdFromDb: $barcodeIdFromDb}';
+    return 'CardInfoRouteArgs{key: $key, cardColor: $cardColor, formFactor: $formFactor, walletAddress: $walletAddress, isOriginalTag: $isOriginalTag, tagId: $tagId, recordsLength: $recordsLength, isExistsInDb: $isExistsInDb, barcodeIdFromDb: $barcodeIdFromDb, serialNumber: $serialNumber}';
   }
 }
 

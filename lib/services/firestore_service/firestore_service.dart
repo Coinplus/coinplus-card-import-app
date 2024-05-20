@@ -107,6 +107,7 @@ Future<void> setDataWithCustomDocumentId({
                   dynamic cardColor;
                   dynamic formFactor;
                   dynamic isOriginalTag = false;
+                  dynamic serialNumber;
                   final recordsLength = records.length;
                   if (recordsLength >= 2) {
                     final hasJson = records[1].payload;
@@ -115,6 +116,7 @@ Future<void> setDataWithCustomDocumentId({
                     walletAddress = payloadData['a'];
                     cardColor = payloadData['c'];
                     formFactor = payloadData['t'];
+                    serialNumber = payloadData['s'];
                   } else {
                     final hasUrl = records[0].payload;
                     final payloadString = String.fromCharCodes(hasUrl);
@@ -150,7 +152,8 @@ Future<void> setDataWithCustomDocumentId({
                       tagId: formattedTagId,
                       recordsLength: recordsLength,
                       isExistsInDb: documentSnapshot.exists,
-                      barcodeIdFromDb: card!.barcodeId,
+                      barcodeIdFromDb: card?.barcodeId,
+                      serialNumber: serialNumber,
                     ),
                   );
                 },
@@ -212,6 +215,7 @@ Future<void> androidNfcSession() async {
       dynamic cardColor;
       dynamic formFactor;
       dynamic isOriginalTag = false;
+      dynamic serialNumber;
       final recordsLength = records.length;
       if (recordsLength >= 2) {
         final hasJson = records[1].payload;
@@ -220,6 +224,7 @@ Future<void> androidNfcSession() async {
         walletAddress = payloadData['a'];
         cardColor = payloadData['c'];
         formFactor = payloadData['t'];
+        serialNumber = payloadData['s'];
       } else {
         final hasUrl = records[0].payload;
         final payloadString = String.fromCharCodes(hasUrl);
@@ -261,6 +266,7 @@ Future<void> androidNfcSession() async {
           recordsLength: recordsLength,
           isExistsInDb: documentSnapshot.exists,
           barcodeIdFromDb: card?.barcodeId,
+          serialNumber: serialNumber,
         ),
       );
     },
@@ -331,7 +337,7 @@ Future<void> androidNfcSession() async {
                       ),
                     )
                     .copyWith(
-                      backgroundColor: MaterialStateProperty.all(Colors.grey.withOpacity(0.3)),
+                      backgroundColor: WidgetStateProperty.all(Colors.grey.withOpacity(0.3)),
                     ),
                 child: const Text('Cancel'),
               ).paddingHorizontal(60),
