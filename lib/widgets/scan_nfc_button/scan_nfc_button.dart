@@ -37,6 +37,7 @@ class ScanNfcButton extends StatelessWidget {
                   dynamic cardColor;
                   dynamic formFactor;
                   dynamic isOriginalTag = false;
+                  dynamic serialNumber;
                   final recordsLength = records.length;
                   if (recordsLength >= 2) {
                     final hasJson = records[1].payload;
@@ -45,6 +46,7 @@ class ScanNfcButton extends StatelessWidget {
                     walletAddress = payloadData['a'];
                     cardColor = payloadData['c'];
                     formFactor = payloadData['t'];
+                    serialNumber = payloadData['s'];
                   } else {
                     final hasUrl = records[0].payload;
                     final payloadString = String.fromCharCodes(hasUrl);
@@ -81,6 +83,7 @@ class ScanNfcButton extends StatelessWidget {
                       recordsLength: recordsLength,
                       isExistsInDb: documentSnapshot.exists,
                       barcodeIdFromDb: card?.barcodeId,
+                      serialNumber: serialNumber,
                     ),
                   );
                 },
@@ -96,6 +99,8 @@ class ScanNfcButton extends StatelessWidget {
                   dynamic cardColor;
                   dynamic formFactor;
                   dynamic isOriginalTag = false;
+                  dynamic serialNumber;
+
                   final recordsLength = records.length;
                   if (recordsLength >= 2) {
                     final hasJson = records[1].payload;
@@ -104,6 +109,8 @@ class ScanNfcButton extends StatelessWidget {
                     walletAddress = payloadData['a'];
                     cardColor = payloadData['c'];
                     formFactor = payloadData['t'];
+                    serialNumber = payloadData['s'];
+
                   } else {
                     final hasUrl = records[0].payload;
                     final payloadString = String.fromCharCodes(hasUrl);
@@ -145,6 +152,7 @@ class ScanNfcButton extends StatelessWidget {
                       recordsLength: recordsLength,
                       isExistsInDb: documentSnapshot.exists,
                       barcodeIdFromDb: card?.barcodeId,
+                      serialNumber: serialNumber,
                     ),
                   );
                 },
@@ -215,7 +223,7 @@ class ScanNfcButton extends StatelessWidget {
                                   ),
                                 )
                                 .copyWith(
-                                  backgroundColor: MaterialStateProperty.all(Colors.grey.withOpacity(0.3)),
+                                  backgroundColor: WidgetStateProperty.all(Colors.grey.withOpacity(0.3)),
                                 ),
                             child: const Text('Cancel'),
                           ).paddingHorizontal(60),

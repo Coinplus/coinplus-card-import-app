@@ -23,6 +23,7 @@ class CardInfoPage extends HookWidget {
     required this.recordsLength,
     required this.isExistsInDb,
     required this.barcodeIdFromDb,
+    required this.serialNumber,
   });
 
   final String? cardColor;
@@ -33,6 +34,7 @@ class CardInfoPage extends HookWidget {
   final int? recordsLength;
   final bool? isExistsInDb;
   final String? barcodeIdFromDb;
+  final String? serialNumber;
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +83,7 @@ class CardInfoPage extends HookWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  height: 100,
+                  height: 80,
                   width: 60,
                   decoration: BoxDecoration(image: getFrontImageForCardColor(cardColor)),
                 ),
@@ -309,7 +311,11 @@ class CardInfoPage extends HookWidget {
                     ),
                   ],
                 ),
-                const Gap(40),
+                const Gap(5),
+                const Text('Serial number:', style: TextStyle(fontWeight: FontWeight.bold, fontFamily: FontFamily.RedHatMedium),),
+                const Gap(5),
+                Text(serialNumber ?? 'None', style: const TextStyle(),),
+                const Gap(10),
                 Row(
                   children: [
                     const Gap(55),
