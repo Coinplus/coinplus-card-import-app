@@ -47,6 +47,7 @@ CardsModel _$CardsModelFromJson(Map<String, dynamic> json) => CardsModel(
           .toList(),
       type: json['type'] as String?,
       verificationFailureCount: json['verificationFailureCount'] as int?,
+      serialNumber: json['serialNumber'] as String?,
     );
 
 Map<String, dynamic> _$CardsModelToJson(CardsModel instance) =>
@@ -67,4 +68,5 @@ Map<String, dynamic> _$CardsModelToJson(CardsModel instance) =>
       'replenishmentHistory': instance.replenishmentHistory,
       'type': instance.type,
       'verificationFailureCount': instance.verificationFailureCount,
+      'serialNumber': instance.serialNumber,
     };
