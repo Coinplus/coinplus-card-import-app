@@ -343,6 +343,7 @@ class CardInfoPage extends HookWidget {
                                               : 'OLD CARD',
                                   possibleOldCard: isOldCard.value,
                                   barcodeId: barcodeId.value,
+                                  serialNumber: serialNumber ?? '',
                                 );
                                 await saveTextFieldValue(barcodeId.value);
                               }

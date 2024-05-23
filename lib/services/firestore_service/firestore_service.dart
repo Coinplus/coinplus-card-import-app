@@ -29,6 +29,7 @@ Future<void> setDataWithCustomDocumentId({
   required bool? possibleOldCard,
   required BuildContext context,
   required String type,
+  required String serialNumber,
 }) async {
   final firestore = FirebaseFirestore.instance;
   final CollectionReference collectionReference = firestore.collection('cards');
@@ -52,6 +53,7 @@ Future<void> setDataWithCustomDocumentId({
     replenishmentHistory: [],
     type: type,
     verificationFailureCount: 0,
+    serialNumber: serialNumber,
   );
   final DocumentReference documentReference = firestore.collection('cards').doc(customDocumentId);
 

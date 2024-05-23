@@ -48,6 +48,7 @@ class CardsModel {
   final List<Map<String, dynamic>>? replenishmentHistory;
   final String? type;
   final int? verificationFailureCount;
+  final String? serialNumber;
 
   CardsModel({
     this.activated,
@@ -66,6 +67,7 @@ class CardsModel {
     this.replenishmentHistory,
     this.type,
     this.verificationFailureCount,
+    this.serialNumber,
   });
 
   factory CardsModel.fromJson(Map<String, dynamic> json) =>
