@@ -4,6 +4,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:lottie/lottie.dart';
@@ -206,6 +207,17 @@ Future<CardsModel?> getCardData(String documentId) async {
     }
   } else {}
   return null;
+}
+
+
+Future<void> signInAnonymously() async {
+    final auth = FirebaseAuth.instance;
+    try {
+      await auth.signInAnonymously();
+      log('Anonymous sign-in successful.');
+    } catch (e) {
+      log('General error during sign-in: $e');
+    }
 }
 
 Future<void> androidNfcSession() async {
