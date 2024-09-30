@@ -6,7 +6,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.2.2 <4.0.0'
+  sdk: '>=3.0.0 <4.0.0'
 
 
 dependencies:
@@ -14,10 +14,10 @@ dependencies:
     sdk: flutter
   json_annotation: ^4.8.1
   provider: ^6.0.5
-  firebase_auth: ^4.14.0
-  firebase_core: ^2.19.0
-  cloud_firestore: ^4.13.3
-  nfc_manager: ^3.2.0
+  firebase_auth: ^5.1.0
+  firebase_core: ^3.3.0
+  cloud_firestore: ^5.0.1
+  nfc_manager: ^3.5.0
   flutter_hooks: ^0.20.3
   styled_text: ^8.1.0
   gap: ^3.0.0
@@ -26,8 +26,6 @@ dependencies:
   lottie: ^2.4.0
   auto_route: ^7.3.2
   shared_preferences: ^2.2.2
-
-
   cupertino_icons: ^1.0.2
 
 
